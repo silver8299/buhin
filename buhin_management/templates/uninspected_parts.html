@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>未検査品の照会</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css">
+</head>
+<body>
+
+    <div style="margin-bottom: 20px;">
+        <a href="{{ url_for('dashboard') }}"><button>🏠 ホームに戻る</button></a>
+        <a href="{{ url_for('logout') }}"><button>🚪 ログアウト</button></a>
+    </div>
+
+    <h2>🧪 未検査品の照会</h2>
+
+    <table id="parts_table" class="display">
+        <thead>
+            <tr>
+                <th>発注番号</th>
+                <th>部品番号</th>
+                <th>部品名</th>
+                <th>数量</th>
+                <th>発注日</th>
+                <th>供給先</th>
+                <th>特記事項</th>
+                <th>データロケーション</th>
+                <th>入荷日</th>
+                <th>発注担当者</th>
+                <th>削除</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for part in parts %}
+            <tr>
+                <td>{{ part.order_number }}</td>
+                <td>{{ part.part_number }}</td>
+                <td>{{ part.part_name }}</td>
+                <td>{{ part.quantity }}</td>
+                <td>{{ part.order_date }}</td>
+                <td>{{ part.supplier_name }}</td>
+                <td>{{ part.remarks }}</td>
+                <td>{{ part.data_location }}</td>
+                <td>{{ part.received_date }}</td>
+                <td>{{ part.ordered_by }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('delete_received_part') }}">
+                        <input type="hidden" name="order_number" value="{{ part.order_number }}">
+                        <button type="submit" onclick="return confirm('本当に削除しますか？')">削除</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#parts_table').DataTable({
+                "order": [],  
+                "language": {
+                    "search": "検索:",
+                    "lengthMenu": "_MENU_ 件表示",
+                    "info": "_TOTAL_ 件中 _START_ から _END_ を表示",
+                    "paginate": {
+                        "first": "先頭",
+                        "last": "最後",
+                        "next": "次",
+                        "previous": "前"
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>発注データ一覧</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+</head>
+<body>
+
+    <!-- 홈/로그아웃 버튼 -->
+    <div style="margin-bottom: 20px;">
+        <a href="{{ url_for('dashboard') }}">
+            <button type="button">🏠 ホームに戻る</button>
+        </a>
+        <a href="{{ url_for('logout') }}">
+            <button type="button">🚪 ログアウト</button>
+        </a>
+    </div>
+
+    <h2>発注データ一覧</h2>
+
+    <table id="orderTable" class="display">
+        <thead>
+            <tr>
+                <th>発注番号</th>
+                <th>部品番号</th>
+                <th>部品名</th>
+                <th>数量</th>
+                <th>発注日</th>
+                <th>供給先</th>
+                <th>ロケーション</th>
+                <th>削除</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row.order_number }}</td>
+                <td>{{ row.part_number }}</td>
+                <td>{{ row.part_name }}</td>
+                <td>{{ row.quantity }}</td>
+                <td>{{ row.order_date }}</td>
+                <td>{{ row.supplier_name }}</td>
+                <td>{{ row.data_location }}</td>
+                <td>
+                    <form method="post" action="{{ url_for('delete_order') }}">
+                        <input type="hidden" name="order_number" value="{{ row.order_number }}">
+                        <button type="submit">削除</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#orderTable').DataTable({
+                language: {
+                    search: "検索:",
+                    lengthMenu: "_MENU_ 件表示",
+                    info: "_TOTAL_ 件中 _START_ 〜 _END_ を表示",
+                    paginate: {
+                        first: "先頭", last: "最後", next: "次", previous: "前"
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

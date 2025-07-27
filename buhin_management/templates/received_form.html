@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>入荷登録</title>
+</head>
+<body>
+
+    <div style="margin-bottom: 20px;">
+        <a href="{{ url_for('dashboard') }}">
+            <button type="button">🏠 ホームに戻る</button>
+        </a>
+        <a href="{{ url_for('logout') }}">
+            <button type="button">🚪 ログアウト</button>
+        </a>
+    </div>
+
+    <h2>入荷情報を入力してください</h2>
+    <form method="post" action="{{ url_for('submit_receipt') }}">
+        <label>発注番号 (order_number):</label><br>
+        <input type="text" name="order_number" required><br><br>
+
+        <label>会社到着日 (received_date):</label><br>
+        <input type="date" name="received_date" required><br><br>
+
+        <button type="submit">登録する</button>
+    </form>
+
+</body>
+</html>

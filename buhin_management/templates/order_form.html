@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>発注フォーム</title>
+</head>
+<body>
+
+    <div style="margin-bottom: 20px;">
+        <a href="{{ url_for('dashboard') }}">
+            <button type="button">🏠 ホームに戻る</button>
+        </a>
+        <a href="{{ url_for('logout') }}">
+            <button type="button">🚪 ログアウト</button>
+        </a>
+    </div>
+
+    <h2>発注情報を入力してください</h2>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul style="color: red;">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="post" action="{{ url_for('submit_order') }}">
+        <label>発注番号 (order_number):</label><br>
+        <input type="text" name="order_number" required><br><br>
+
+        <label>部品番号 (part_number):</label><br>
+        <input type="text" name="part_number" required><br><br>
+
+        <label>データロケーション (data_location):</label><br>
+        <select name="data_location" required>
+            <option value="">選択してください</option>
+            <option value="製番">製番</option>
+            <option value="MRP">MRP</option>
+        </select><br><br>
+
+        <label>部品名 (part_name):</label><br>
+        <input type="text" name="part_name" required><br><br>
+
+        <label>発注数量 (quantity):</label><br>
+        <input type="number" name="quantity" required><br><br>
+
+        <label>発注日 (order_date):</label><br>
+        <input type="date" name="order_date" required><br><br>
+
+        <label>供給先 (supplier_name):</label><br>
+        <input type="text" name="supplier_name" required><br><br>
+
+        <label>特記事項 (remarks):</label><br>
+        <textarea name="remarks" rows="4" cols="50" placeholder="必要があれば入力してください"></textarea><br><br>
+
+        <button type="submit">発注する</button>
+    </form>
+
+</body>
+</html>

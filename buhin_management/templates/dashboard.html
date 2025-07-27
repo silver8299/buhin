@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ダッシュボード</title>
+</head>
+
+<body>
+
+    <div style="margin-bottom: 20px;">
+        <a href="{{ url_for('dashboard') }}">
+            <button type="button">🏠 ホームに戻る</button>
+        </a>
+        <a href="{{ url_for('logout') }}">
+            <button type="button">🚪 ログアウト</button>
+        </a>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul style="color: green;">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <h2>ようこそ, {{ username }} さん！</h2>
+
+    {% if role == 'order' %}
+        <p><a href="{{ url_for('order_form') }}">▶ 発注情報を入力する</a></p>
+        <p><a href="{{ url_for('receive_form') }}">▶ 入荷情報を登録する</a></p>
+    {% elif role == 'inspect' %}
+        <p>検査担当者用のメニューです。</p>
+    {% endif %}
+
+    {% if role == 'order' %}
+        <h3>発注担当者メニュー</h3>
+        <ul>
+            <li><a href="{{ url_for('order_list') }}">▶ 発注データ一覧を見る</a></li>
+            <li><a href="{{ url_for('uninspected_parts') }}">▶ 未検査品の照会（入荷データの照会）・削除</a></li>
+        </ul>
+    {% endif %}
+
+    <p><a href="{{ url_for('logout') }}">ログアウト</a></p>
+</body>
+</html>

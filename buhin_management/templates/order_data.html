@@ -75,10 +75,15 @@
                 }
             });
 
-            // ✅ 발주번호 정확히 일치 검색 적용
+            // ✅ 검색어가 비어 있으면 전체 표시, 아니면 정확히 일치한 행만 필터링
             $('#orderNumberSearch').on('keyup change', function () {
-                var keyword = '^' + this.value + '$';  // 정확히 일치하는 정규식
-                table.column(0).search(keyword, true, false).draw();
+                var value = this.value.trim();
+                if (value === '') {
+                    table.column(0).search('', false, false).draw();  // 전체 복원
+                } else {
+                    var keyword = '^' + value + '$';  // 정규식: 정확히 일치
+                    table.column(0).search(keyword, true, false).draw();
+                }
             });
         });
     </script>

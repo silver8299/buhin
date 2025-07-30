@@ -19,10 +19,11 @@
 
     <h2>発注データ一覧</h2>
 
-    <!-- ✅ 발주번호 정확히 일치 검색창 -->
+    <!-- ✅ 발주번호 전용 검색창 + 리셋 버튼 -->
     <div style="margin-bottom: 10px;">
         <label for="orderNumberSearch">🔍 発注番号で検索（完全一致）:</label>
         <input type="text" id="orderNumberSearch" placeholder="例: PO123456">
+        <button type="button" id="resetAll">リセット</button>
     </div>
 
     <table id="orderTable" class="display">
@@ -75,15 +76,23 @@
                 }
             });
 
-            // ✅ 검색어가 비어 있으면 전체 표시, 아니면 정확히 일치한 행만 필터링
+            // ✅ 발주번호 정확히 일치 검색
             $('#orderNumberSearch').on('keyup change', function () {
                 var value = this.value.trim();
                 if (value === '') {
-                    table.column(0).search('', false, false).draw();  // 전체 복원
+                    table.column(0).search('', false, false).draw();
                 } else {
-                    var keyword = '^' + value + '$';  // 정규식: 정확히 일치
+                    var keyword = '^' + value + '$';
                     table.column(0).search(keyword, true, false).draw();
                 }
+            });
+
+            // ✅ 리셋 버튼: 사용자 정의 검색 + 기본 검색창 초기화
+            $('#resetAll').on('click', function () {
+                $('#orderNumberSearch').val(''); // 입력창 비우기
+                table.column(0).search('', false, false); // 발주번호 검색 해제
+                table.search(''); // 기본 검색창 초기화
+                table.draw(); // 반영
             });
         });
     </script>

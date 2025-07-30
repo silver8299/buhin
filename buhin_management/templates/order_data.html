@@ -19,6 +19,12 @@
 
     <h2>発注データ一覧</h2>
 
+    <!-- ✅ 발주번호 정확히 일치 검색창 -->
+    <div style="margin-bottom: 10px;">
+        <label for="orderNumberSearch">🔍 発注番号で検索（完全一致）:</label>
+        <input type="text" id="orderNumberSearch" placeholder="例: PO123456">
+    </div>
+
     <table id="orderTable" class="display">
         <thead>
             <tr>
@@ -53,11 +59,12 @@
         </tbody>
     </table>
 
+    <!-- 스크립트 로드 -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#orderTable').DataTable({
+            var table = $('#orderTable').DataTable({
                 language: {
                     search: "検索:",
                     lengthMenu: "_MENU_ 件表示",
@@ -66,6 +73,12 @@
                         first: "先頭", last: "最後", next: "次", previous: "前"
                     }
                 }
+            });
+
+            // ✅ 발주번호 정확히 일치 검색 적용
+            $('#orderNumberSearch').on('keyup change', function () {
+                var keyword = '^' + this.value + '$';  // 정확히 일치하는 정규식
+                table.column(0).search(keyword, true, false).draw();
             });
         });
     </script>

@@ -14,6 +14,12 @@
 
     <h2>🧪 未検査品の照会</h2>
 
+    <!-- ✅ 발주번호 전용 검색창 -->
+    <div style="margin-bottom: 10px;">
+        <label for="orderSearch">🔍 発注番号で検索（完全一致）:</label>
+        <input type="text" id="orderSearch" placeholder="例: PO123456">
+    </div>
+
     <table id="parts_table" class="display">
         <thead>
             <tr>
@@ -59,7 +65,7 @@
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#parts_table').DataTable({
+            const table = $('#parts_table').DataTable({
                 "order": [],  
                 "language": {
                     "search": "検索:",
@@ -72,6 +78,12 @@
                         "previous": "前"
                     }
                 }
+            });
+
+            // ✅ 발주번호 정확히 일치 검색 기능
+            $('#orderSearch').on('keyup change', function () {
+                const keyword = '^' + this.value + '$';  // 정규표현식: 정확히 일치
+                table.column(0).search(keyword, true, false).draw();  // column(0): 発注番号 열
             });
         });
     </script>
